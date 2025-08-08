@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kolin Poizon — Resell Jackets & More</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#fff;
+    --text:#111;
+    --muted:#777;
+    --accent:#FF4B4B;
+    --black:#000;
+    --gray-100:#f5f5f5;
+    --maxw:1200px;
+    --card-radius:12px;
+    --glass: rgba(255,255,255,0.6);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* RESET */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.4;
+    -webkit-tap-highlight-color:transparent;
+    scroll-behavior:smooth;
+  }
+
+  /* LAYOUT */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 24px;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.45));
+    border-bottom:1px solid rgba(0,0,0,0.05);
+    transition: transform .45s cubic-bezier(.2,.9,.2,1), background .3s;
+  }
+  header.scrolled{ transform: translateY(-8px); background: rgba(255,255,255,0.92); box-shadow: 0 6px 30px rgba(0,0,0,0.04) }
+
+  .container{ max-width:var(--maxw); margin:0 auto; width:100%; padding:0 20px; }
+
+  /* LOGO */
+  .logo{ display:flex; align-items:center; gap:12px; cursor:pointer; text-decoration:none; color:var(--black) }
+  .logo svg{ width:44px; height:44px; }
+  .logo .brand{ font-weight:700; letter-spacing:0.6px; font-size:18px; }
+
+  nav{ display:flex; gap:18px; align-items:center; font-weight:500; color:var(--muted) }
+  nav a{ text-decoration:none; color:inherit; padding:8px; border-radius:8px; transition: all .25s; }
+  nav a:hover{ color:var(--accent); transform:translateY(-2px); }
+
+  .cta-btn{
+    display:inline-flex; gap:10px; align-items:center;
+    background:var(--accent); color:#fff; padding:10px 14px; border-radius:10px;
+    text-decoration:none; font-weight:700; box-shadow: 0 8px 20px rgba(255,75,75,0.18);
+    transition: transform .18s ease, box-shadow .18s;
+  }
+  .cta-btn:active{ transform: translateY(1px) }
+
+  /* HERO */
+  .hero{
+    min-height:85vh;
+    display:grid;
+    grid-template-columns: 1fr 480px;
+    gap:40px;
+    align-items:center;
+    padding-top:92px; /* header space */
+  }
+  .hero-left{
+    padding:20px 0;
+  }
+  .eyebrow{ color:var(--muted); font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px; font-size:12px; }
+  h1{
+    font-size:46px; margin:0 0 18px; line-height:1.02;
+    font-weight:800;
+    letter-spacing:-1px;
+  }
+  p.lead{ color:var(--muted); font-size:18px; margin:0 0 24px; max-width:54ch; }
+
+  .hero .actions{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+
+  /* hero-right image with depth/parallax */
+  .hero-right{
+    position:relative;
+    height:520px;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow: 0 18px 40px rgba(2,2,2,0.12);
+    transform-style:preserve-3d;
+    transition: transform .8s cubic-bezier(.2,.9,.2,1);
+    perspective:1200px;
+  }
+  .hero-image{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform: translateZ(0);
+    transition: transform .9s cubic-bezier(.2,.9,.2,1);
+  }
+  .hero-right:hover{ transform: translateY(-8px) scale(1.01); }
+
+  /* site sections */
+  section{ padding:84px 0; }
+  .section-title{ font-size:20px; font-weight:700; margin-bottom:18px; display:flex; align-items:center; gap:12px; }
+
+  /* CATALOG */
+  .filters{
+    display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; align-items:center;
+  }
+  .select, .range{
+    background:var(--gray-100); border-radius:12px; padding:10px 12px; font-weight:600; border:1px solid rgba(0,0,0,0.04);
+  }
+  .catalog-grid{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:18px;
+  }
+
+  .card{
+    background:#fff; border-radius:14px; overflow:hidden; box-shadow: 0 12px 28px rgba(2,2,2,0.06);
+    transition: transform .32s cubic-bezier(.2,.9,.2,1), box-shadow .32s;
+    display:flex; flex-direction:column;
+  }
+  .card:hover{ transform: translateY(-8px); box-shadow: 0 28px 60px rgba(2,2,2,0.12); }
+
+  .card img{ width:100%; height:320px; object-fit:cover; display:block; }
+  .card-body{ padding:14px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .brand{ font-weight:700; font-size:14px; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px }
+  .title{ font-size:16px; font-weight:700 }
+  .price{ margin-left:auto; font-weight:800; color:var(--accent) }
+  .desc{ color:var(--muted); font-size:13px; margin-top:6px; flex:1 }
+  .card-footer{ display:flex; gap:10px; padding:12px 16px; align-items:center; border-top:1px solid rgba(0,0,0,0.03); }
+  .buy-btn{ background:var(--accent); color:#fff; border-radius:10px; padding:10px 12px; text-decoration:none; font-weight:700; }
+
+  /* ABOUT */
+  .about-grid{ display:grid; grid-template-columns: 1fr 420px; gap:28px; align-items:center; }
+
+  /* CONTACTS */
+  .contact-grid{ display:grid; grid-template-columns: 1fr 420px; gap:28px; align-items:start; }
+  form .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+  input, textarea, select{ padding:12px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.06); background: #fff; font-size:14px; }
+  .map{ border-radius:12px; overflow:hidden; height:320px; box-shadow: 0 12px 30px rgba(2,2,2,0.06) }
+
+  /* FOOTER */
+  footer{ padding:28px 0; border-top:1px solid rgba(0,0,0,0.05); background:linear-gradient(180deg,#fff,#fbfbfb); }
+
+  /* RESPONSIVE */
+  @media (max-width:1100px){
+    .hero{ grid-template-columns: 1fr; padding-top:100px; }
+    .hero-right{ height:420px; }
+    .catalog-grid{ grid-template-columns: repeat(2,1fr) }
+    .about-grid, .contact-grid{ grid-template-columns: 1fr; }
+  }
+  @media (max-width:640px){
+    header{ padding:12px 14px }
+    .logo .brand{ font-size:16px }
+    h1{ font-size:34px }
+    .catalog-grid{ grid-template-columns: 1fr }
+    .hero-right{ height:320px }
+    nav{ display:none }
+  }
+
+  /* APPEAR REVEAL ANIM */
+  .reveal{ opacity:0; transform: translateY(18px) scale(.997); transition: opacity .8s cubic-bezier(.2,.9,.2,1), transform .8s cubic-bezier(.2,.9,.2,1); will-change: transform, opacity; }
+  .reveal.visible{ opacity:1; transform: none; }
+
+  /* tiny micro interactions */
+  .tag{ font-size:12px; padding:6px 8px; border-radius:10px; background:rgba(0,0,0,0.04); color:var(--muted); font-weight:700; }
+  .inline{ display:inline-flex; gap:8px; align-items:center; }
+
+  /* subtle scroll snap for immersion */
+  main{ scroll-snap-type:y proximity; }
+  section{ scroll-snap-align:start; }
+
+</style>
+</head>
+<body>
+<header id="siteHeader" class="">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+    <a class="logo" href="#home" aria-label="Kolin Poizon — home">
+      <!-- Minimalist SVG logo -->
+      <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+        <rect x="8" y="8" width="84" height="84" rx="14" fill="#111" />
+        <path d="M24 64 L40 36 L56 64 Z" fill="#fff" />
+      </svg>
+      <div class="brand">Kolin Poizon</div>
+    </a>
+
+    <nav>
+      <a href="#catalog">Каталог</a>
+      <a href="#about">О нас</a>
+      <a href="#contacts">Контакты</a>
+      <a class="cta-btn" href="#catalog">Смотреть каталог</a>
+    </nav>
+    <!-- mobile menu btn -->
+    <div id="mobileMenuBtn" style="display:none"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="home" class="hero container">
+    <div class="hero-left reveal">
+      <div class="eyebrow">Новые поступления</div>
+      <h1>Перепродажа крутых курток<br/><span style="color:var(--accent)">из коллекций популярных брендов</span></h1>
+      <p class="lead">Кураторский отбор, проверенное состояние и честные цены. У нас — редкие релизы и базовые must-have вещи.</p>
+      <div class="actions">
+        <a class="cta-btn" href="#catalog">Смотреть каталог</a>
+        <a class="tag" href="#about">Почему мы</a>
+        <div style="width:12px"></div>
+        <!-- payment quick icons -->
+        <div class="inline" aria-hidden="true">
+          <small style="color:var(--muted)">Оплата:</small>
+          <div style="display:flex;gap:8px;align-items:center;margin-left:8px">
+            <svg width="28" height="18"><rect width="28" height="18" rx="3" fill="#111"/></svg>
+            <svg width="28" height="18"><rect width="28" height="18" rx="3" fill="#000"/></svg>
+            <svg width="28" height="18"><rect width="28" height="18" rx="3" fill="#111"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right reveal" aria-hidden="false">
+      <img src="assets/hero-jacket.jpg" alt="Стильная куртка — Kolin Poizon" class="hero-image" id="heroImage">
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section id="catalog" class="container reveal">
+    <div class="section-title">Каталог</div>
+
+    <div class="filters" aria-label="Фильтры товаров">
+      <select id="filterBrand" class="select" aria-label="Фильтр по бренду">
+        <option value="all">Все бренды</option>
+        <option value="nike">Nike</option>
+        <option value="adidas">Adidas</option>
+        <option value="supreme">Supreme</option>
+        <option value="north">The North Face</option>
+      </select>
+
+      <select id="filterSize" class="select" aria-label="Фильтр по размеру">
+        <option value="all">Все размеры</option>
+        <option value="s">S</option><option value="m">M</option><option value="l">L</option><option value="xl">XL</option>
+      </select>
+
+      <div style="display:flex;gap:8px;align-items:center;">
+        <label style="font-weight:700;color:var(--muted)">Цена</label>
+        <input id="priceMax" class="range" type="number" placeholder="Макс, ₽" style="width:120px" />
+      </div>
+
+      <button id="clearFilters" class="tag" style="margin-left:auto">Сбросить</button>
+    </div>
+
+    <div id="catalogGrid" class="catalog-grid" aria-live="polite">
+      <!-- Product cards will be injected here -->
+    </div>
+
+    <div style="margin-top:18px; display:flex; justify-content:center;">
+      <button id="loadMore" class="tag">Загрузить ещё</button>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="container reveal">
+    <div class="section-title">О нас</div>
+    <div class="about-grid">
+      <div>
+        <h3 style="margin-top:0">Kolin Poizon — curated resell</h3>
+        <p class="lead" style="margin-top:6px; max-width:none">
+          Наша концепция — честные вещи с историей и премиальный отбор. Мы проверяем подлинность, состояние и даём честное описание. Для каждого товара — детальные фото и история происхождения.
+        </p>
+        <ul style="color:var(--muted); margin-top:8px">
+          <li>Гарантия подлинности</li>
+          <li>Проверка состояния и фото в HQ</li>
+          <li>Быстрая доставка по России и EU</li>
+          <li>Оплата картой, PayPal, Apple Pay / Google Pay</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:var(--gray-100); padding:14px; border-radius:12px;">
+          <strong>Как мы работаем</strong>
+          <p style="margin:8px 0 0;color:var(--muted)">Мы выкупаем и принимаем вещи на комиссию, реставрируем мелкие дефекты и фотографируем в студии. Цены формируем честно — за редкость и состояние.</p>
+        </div>
+        <div style="background:var(--gray-100); padding:14px; border-radius:12px;">
+          <strong>Возврат</strong>
+          <p style="margin:8px 0 0;color:var(--muted)">Возврат возможен в течение 14 дней при несоответствии описанию. Свяжитесь через форму.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section id="contacts" class="container reveal">
+    <div class="section-title">Контакты</div>
+    <div class="contact-grid">
+      <div>
+        <form id="contactForm" novalidate>
+          <div class="field">
+            <label>Имя</label>
+            <input type="text" id="c_name" required placeholder="Ваше имя" />
+          </div>
+          <div class="field">
+            <label>Электронная почта</label>
+            <input type="email" id="c_email" required placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label>Сообщение</label>
+            <textarea id="c_msg" rows="5" placeholder="Опишите ваш вопрос"></textarea>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button type="submit" class="cta-btn">Отправить</button>
+            <div style="color:var(--muted)">или <a href="tel:+79990001122">+7 (999) 000-11-22</a></div>
+          </div>
+        </form>
+
+        <div style="margin-top:18px; color:var(--muted)">
+          <div><strong>Адрес:</strong> ул. Примерная, д. 7, Санкт-Петербург</div>
+          <div><strong>Часы:</strong> Пн–Пт 10:00–19:00</div>
+        </div>
+
+        <!-- Payment placeholders -->
+        <div style="margin-top:16px; display:flex; gap:10px; align-items:center;">
+          <button class="tag">Оплатить картой</button>
+          <button class="tag">PayPal</button>
+          <button class="tag">Apple Pay</button>
+        </div>
+      </div>
+
+      <div class="map" aria-hidden="false">
+        <!-- Map placeholder: заменить iframe на Google Maps / Yandex Map embed -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18" width="100%" height="100%" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Карта"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:44px;height:44px;background:#111;border-radius:8px"></div>
+        <div>
+          <div style="font-weight:700">Kolin Poizon</div>
+          <div style="color:var(--muted); font-size:13px">© <span id="year"></span> Все права защищены</div>
+        </div>
+      </div>
+      <div style="color:var(--muted)">Политика конфиденциальности • Условия</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+/* ======================
+   MOCK DATA (replace with real API)
+   ====================== */
+const PRODUCTS = [
+  {id:1,brand:'Nike', title:'Nike ACG Jacket', price:12900, size:['m','l'], desc:'Лёгкая куртка ACG, почти новая', img:'assets/p1.jpg'},
+  {id:2,brand:'Adidas', title:'Adidas Terrex Parka', price:18900, size:['l','xl'], desc:'Парка утеплённая, редкая расцветка', img:'assets/p2.jpg'},
+  {id:3,brand:'Supreme', title:'Supreme Denim Jacket', price:24900, size:['s','m'], desc:'Джинсовая куртка, лимит', img:'assets/p3.jpg'},
+  {id:4,brand:'The North Face', title:'TNF Denali', price:9900, size:['m','l'], desc:'Классика — идеальна для осени', img:'assets/p4.jpg'},
+  {id:5,brand:'Nike', title:'Nike Windrunner', price:7200, size:['s','m'], desc:'Лёгкая ветровка', img:'assets/p5.jpg'},
+  {id:6,brand:'Adidas', title:'Adidas Originals', price:5600, size:['l','xl'], desc:'Повседневная куртка', img:'assets/p6.jpg'},
+];
+
+/* ======================
+   DOM helpers & render
+   ====================== */
+const grid = document.getElementById('catalogGrid');
+let shown = 0;
+const PER_PAGE = 6;
+function createCard(p){
+  const card = document.createElement('article');
+  card.className = 'card reveal';
+  card.innerHTML = `
+    <img src="${p.img}" alt="${p.title}">
+    <div class="card-body">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="brand">${p.brand}</div>
+        <div class="price">₽${p.price.toLocaleString('ru-RU')}</div>
+      </div>
+      <div class="title">${p.title}</div>
+      <div class="desc">${p.desc}</div>
+    </div>
+    <div class="card-footer">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="tag">Размеры: ${p.size.join(', ')}</button>
+      </div>
+      <div style="margin-left:auto">
+        <a href="#" class="buy-btn" data-id="${p.id}">Купить</a>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function renderProducts(arr, reset=true){
+  if(reset){ grid.innerHTML=''; shown=0; }
+  const slice = arr.slice(shown, shown+PER_PAGE);
+  slice.forEach(p => grid.appendChild(createCard(p)));
+  shown += slice.length;
+  observeReveals(); // for animation
+}
+
+/* initial render */
+renderProducts(PRODUCTS);
+
+/* Load more */
+document.getElementById('loadMore').addEventListener('click', ()=>{
+  renderProducts(PRODUCTS, false);
+});
+
+/* FILTERS (client-side example) */
+const brandSel = document.getElementById('filterBrand');
+const sizeSel = document.getElementById('filterSize');
+const priceMax = document.getElementById('priceMax');
+const clearBtn = document.getElementById('clearFilters');
+
+function applyFilters(){
+  let res = PRODUCTS.slice();
+  const b = brandSel.value;
+  if(b && b!=='all') res = res.filter(p=>p.brand.toLowerCase()===b);
+  const s = sizeSel.value;
+  if(s && s!=='all') res = res.filter(p=>p.size.includes(s));
+  const pm = parseInt(priceMax.value);
+  if(!isNaN(pm)) res = res.filter(p=>p.price <= pm);
+  renderProducts(res);
+}
+brandSel.addEventListener('change', applyFilters);
+sizeSel.addEventListener('change', applyFilters);
+priceMax.addEventListener('input', debounce(applyFilters, 300));
+clearBtn.addEventListener('click', ()=>{
+  brandSel.value='all'; sizeSel.value='all'; priceMax.value='';
+  applyFilters();
+});
+
+/* debounce */
+function debounce(fn, t){
+  let id;
+  return (...args)=>{ clearTimeout(id); id=setTimeout(()=>fn(...args), t); }
+}
+
+/* HERO parallax / tilt on mouse move for immersion */
+const hero = document.querySelector('.hero-right');
+const heroImg = document.getElementById('heroImage');
+if(hero){
+  hero.addEventListener('mousemove', (e)=>{
+    const r = hero.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    hero.style.transform = `perspective(800px) rotateY(${px*6}deg) rotateX(${py*-6}deg) translateZ(6px)`;
+    heroImg.style.transform = `scale(1.03) translateZ(40px) translateY(${py*8}px)`;
+  });
+  hero.addEventListener('mouseleave', ()=>{
+    hero.style.transform='none';
+    heroImg.style.transform='none';
+  });
+}
+
+/* header scroll effect */
+const header = document.getElementById('siteHeader');
+let lastScroll=0;
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  if(y>40) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+  lastScroll = y;
+});
+
+/* reveal on scroll */
+const revealEls = [];
+function observeReveals(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(!revealEls.includes(el)) revealEls.push(el);
+  });
+}
+observeReveals();
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('visible'); io.unobserve(entry.target); }
+  });
+}, {threshold:0.12});
+revealEls.forEach(el=>io.observe(el));
+
+/* contacts form (stub) */
+document.getElementById('contactForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  // basic client validation
+  const name = document.getElementById('c_name').value.trim();
+  const email = document.getElementById('c_email').value.trim();
+  const msg = document.getElementById('c_msg').value.trim();
+  if(!name || !email){ alert('Пожалуйста, заполните имя и почту.'); return; }
+  // simulate send
+  alert('Сообщение отправлено! Мы свяжемся в ближайшее время.');
+  e.target.reset();
+});
+
+/* dynamic year */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Small accessibility: keyboard focus visible */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Tab') document.body.classList.add('show-focus');
+});
+</script>
+</body>
+</html>
